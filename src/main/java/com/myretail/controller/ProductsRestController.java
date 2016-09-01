@@ -59,6 +59,27 @@ public class ProductsRestController {
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 
+	// ------------------- Update a Product
+	// --------------------------------------------------------
+
+	@RequestMapping(value = "/product/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> updatePriceById(@PathVariable("id") long id, @RequestBody Product product) {
+		log.info("Entering method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) " + id);
+
+		Product currentProduct = productService.findById(id);
+
+		if (currentProduct == null) {
+			log.info("Product with id " + id + " not found");
+			return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
+		}
+
+		currentProduct.setCurrent_price(product.getCurrent_price());
+		log.info("Updating Product with id "+id);
+		Product updatedProduct = productService.updateProduct(currentProduct);
+		log.info("Exiting method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) " + id);
+		return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
+	}
+
 	/*
 	 * //-------------------Create a
 	 * User--------------------------------------------------------
@@ -81,25 +102,6 @@ public class ProductsRestController {
 	 * HttpStatus.CREATED); }
 	 */
 
-	// ------------------- Update a Product
-	// --------------------------------------------------------
 
-	@RequestMapping(value = "/product/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Product> updatePriceById(@PathVariable("id") long id, @RequestBody Product product) {
-		log.info("Entering method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) " + id);
-
-		Product currentProduct = productService.findById(id);
-
-		if (currentProduct == null) {
-			log.info("Product with id " + id + " not found");
-			return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
-		}
-
-		currentProduct.setCurrent_price(product.getCurrent_price());
-		log.info("Updating Product with id "+id);
-		Product updatedProduct = productService.updateProduct(currentProduct);
-		log.info("Exiting method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) " + id);
-		return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
-	}
-
+	
 }

@@ -10,4 +10,16 @@
 
 	<context:component-scan base-package="com.myretail.service" />
 
+	<bean id="httpClientFactory"
+		class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+		<property name="readTimeout" value="1000" />
+		<property name="connectTimeout" value="500" />
+	</bean>
+
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate"
+		scope="prototype">
+		<constructor-arg ref="httpClientFactory" />
+	</bean>
+
+
 </beans>

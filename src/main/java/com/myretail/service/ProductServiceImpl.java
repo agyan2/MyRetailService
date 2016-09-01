@@ -3,16 +3,20 @@ package com.myretail.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.myretail.model.Price;
 import com.myretail.model.Product;
+import com.myretail.model.ProductName;
 
 @Service("productService")
 @Transactional
 public class ProductServiceImpl implements ProductService {
 
+	@Autowired
+	ProductNameService productNameService;
 	private static List<Product> products;
 
 	static {
@@ -43,11 +47,28 @@ public class ProductServiceImpl implements ProductService {
 
 	
 	public List<Product> findAllProducts() {
-		// TODO Auto-generated method stub
+		//Initialize Response 
+		List<Product> products = new ArrayList<Product>();
+		//Get all product names
+		List<ProductName> productNames = productNameService.findAll();
+		//Get All product Pricing
+		populateProductNames(products,productNames);
+		
 		return products;
 	}
 
 	
+	private void populateProductNames(List<Product> products, List<ProductName> productNames) {
+		Product product = null;
+		for(ProductName productName:productNames)
+		{
+			product = new Product(productName.getId(),productName.getName(),null);
+			products.add(product);
+		}
+		
+	}
+
+
 	public Product updateProduct(Product product) {
 		// TODO Auto-generated method stub
 		for (Product prod : products) {

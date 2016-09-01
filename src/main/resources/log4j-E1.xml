@@ -1,7 +1,7 @@
 <Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
 
 	<Appenders>
-		
+
 		<RollingRandomAccessFile name="rfile"
 			fileName="/logs/myretailservice/trace.log"
 			filePattern="/logs/myretailservice/archive/rollingrandomaccessfile.log.%d{yyyy-MM-dd-hh-mm}.gz">
@@ -11,7 +11,7 @@
 				<SizeBasedTriggeringPolicy size="200 KB" />
 			</Policies>
 			<DefaultRolloverStrategy max="30" />
-		</RollingRandomAccessFile> 
+		</RollingRandomAccessFile>
 		<Console name="STDOUT" target="SYSTEM_OUT">
 			<PatternLayout
 				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
@@ -19,15 +19,22 @@
 	</Appenders>
 
 	<Loggers>
-		<!-- <Logger name="eu.keyup" level="debug" /> -->
-		<Logger name="com.americanexpress" level="info" />
-		<logger name="org.springframework" level="info" />
-		<logger name="org.apache" level="info" />
- 
-		<Root level="info">
+
+  		<Logger name="com.myretail" level="debug"/>
+  		<Logger name="org.springframework" level="debug"/>
+  		<Logger name="org.apache" level="debug"/>
+<!--  		<Logger name="org.springframework" level="info" additivity="false">
 			<AppenderRef ref="STDOUT" />
-			<AppenderRef ref="rfile" /> 
-		</Root>
+			
+		</Logger>
+ --><!-- 		<logger name="org.apache" level="info">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="rfile" />
+		</logger> -->
+ 		<Root level="debug">
+			<AppenderRef ref="STDOUT" /> 
+			<AppenderRef ref="rfile" />
+		</Root> 
 	</Loggers>
 
 </Configuration>
