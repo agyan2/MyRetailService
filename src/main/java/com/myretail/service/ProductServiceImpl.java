@@ -17,67 +17,53 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductNameService productNameService;
-	private static List<Product> products;
+	@Autowired
+	ProductPriceService productPriceService;
 
-	static {
-		products = populateDummyProducts();
-	}
-
-	private static List<Product> populateDummyProducts() {
-		List<Product> products = new ArrayList<Product>();
-		products.add(new Product(13860428, "The Big Lebowski (Blu-ray) (Widescreen)", new Price(13.49, "USD")));
-		products.add(new Product(15117729, "The Godfather I", new Price(23.49, "USD")));
-		products.add(new Product(16483589, "The Godfather II", new Price(11.51, "USD")));
-		products.add(new Product(16696652, "The Godfather III", new Price(73.49, "USD")));
-		products.add(new Product(16752456, "Lord of The Rings", new Price(99.89, "USD")));
-		products.add(new Product(15643793, "The Dark Knight", new Price(43.33, "USD")));
-		return products;
-	}
-
-	
 	public Product findById(long id) {
-		// TODO Auto-generated method stub
-
-		for (Product product : products) {
-			if (product.getId() == id)
-				return product;
-		}
-		return null;
+		Product product = new Product();
+		ProductName productName = productNameService.findById(id);
+		Price price = productPriceService.findById(id);
+		populateProduct(product, productName, price);
+		return product;
 	}
 
-	
+	private void populateProduct(Product product, ProductName productName, Price price) {
+		// TODO Auto-generated method stub
+		product.setId(productName.getId());
+		product.setName(productName.getName());
+		product.setCurrent_price(price);
+	}
+
 	public List<Product> findAllProducts() {
-		//Initialize Response 
+		// Initialize Response
 		List<Product> products = new ArrayList<Product>();
-		//Get all product names
+		// Get all product names
 		List<ProductName> productNames = productNameService.findAll();
-		//Get All product Pricing
-		populateProductNames(products,productNames);
-		
+		// Get All product Pricing
+		populateProducts(products, productNames);
+
 		return products;
 	}
 
-	
-	private void populateProductNames(List<Product> products, List<ProductName> productNames) {
+	private void populateProducts(List<Product> products, List<ProductName> productNames) {
 		Product product = null;
-		for(ProductName productName:productNames)
-		{
-			product = new Product(productName.getId(),productName.getName(),null);
+		for (ProductName productName : productNames) {
+			product = new Product();
+
+			populateProduct(product, productName, productPriceService.findById(productName.getId()));
+
 			products.add(product);
 		}
-		
-	}
 
+	}
 
 	public Product updateProduct(Product product) {
 		// TODO Auto-generated method stub
-		for (Product prod : products) {
-			if (prod.getId() == product.getId()) {
-				prod.setCurrent_price(product.getCurrent_price());
-				return prod;
-			}
-		}
-		return null;
+		product.getCurrent_price().setId(product.getId());
+		Price updatedPrice = productPriceService.updatePrice(product.getCurrent_price());
+		product.setCurrent_price(updatedPrice);
+		return product;
 	}
 
 }

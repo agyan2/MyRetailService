@@ -36,7 +36,7 @@ public class ProductNameServiceImpl implements ProductNameService {
 
 		ProductName[] productNames = restTemplate.getForObject("http://localhost:8080/MyRetailService/api/productname",ProductName[].class);
 		
-		log.info("Exiting ProductName findBAll()");
+		log.info("Exiting List<ProductName> findAll()");
 		return Arrays.asList(productNames);
 	}
 

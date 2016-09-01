@@ -1,7 +1,11 @@
 package com.myretail.model;
 
-public class Price {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+public class Price {
+	@JsonIgnore
+	private long id;
+	
 	private double value;
 	
 	private String currency_code;
@@ -12,6 +16,13 @@ public class Price {
 	
 	public Price(double value, String currency_code) {
 		super();
+		this.value = value;
+		this.currency_code = currency_code;
+	}
+	
+	public Price(long id, double value, String currency_code) {
+		super();
+		this.id=id;
 		this.value = value;
 		this.currency_code = currency_code;
 	}
@@ -32,16 +43,27 @@ public class Price {
 		this.currency_code = currency_code;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Price [value=");
+		builder.append("Price [id=");
+		builder.append(id);
+		builder.append(", value=");
 		builder.append(value);
 		builder.append(", currency_code=");
 		builder.append(currency_code);
 		builder.append("]");
 		return builder.toString();
 	}
+
 	
-	
+
 }
