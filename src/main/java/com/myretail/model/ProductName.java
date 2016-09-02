@@ -1,5 +1,10 @@
 package com.myretail.model;
 
+/**
+ * ProductName model from external service
+ * @author agyan2
+ *
+ */
 public class ProductName {
 
 	private long id;

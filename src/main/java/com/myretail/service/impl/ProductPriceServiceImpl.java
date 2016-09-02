@@ -14,7 +14,11 @@ import com.myretail.exception.SystemExceptionEnum;
 import com.myretail.model.Price;
 import com.myretail.repo.PriceRepo;
 import com.myretail.service.ProductPriceService;
-
+/**
+ * Product Price service to get/update price
+ * @author agyan2
+ *
+ */
 @Service("productPriceService")
 
 public class ProductPriceServiceImpl implements ProductPriceService {
@@ -23,6 +27,9 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 	@Autowired
 	PriceRepo priceRepo;
 
+	/**
+	 * find price by id
+	 */
 	public Price findById(long id) throws SystemException {
 		log.info("Entering Price findById(long id) " + id);
 		Price price = null;
@@ -40,7 +47,10 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 
 		return price;
 	}
-
+	
+	/**
+	 * find all prices
+	 */
 	public List<Price> findAll() throws SystemException {
 		log.info("Entering List<Price> findAll()");
 		List<Price> prices = null;
@@ -60,7 +70,10 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 		log.info("Exiting List<Price> findAll() " + prices);
 		return prices;
 	}
-
+	
+	/**
+	 * Returns all price as map
+	 */
 	public Map<Long, Price> findAllAsMap() throws SystemException {
 		log.info("Map<Long,Price> findAllAsMap()");
 		Map<Long, Price> priceMap = new HashMap<Long, Price>();
@@ -71,6 +84,9 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 		return priceMap;
 	}
 
+	/**
+	 * Updates price
+	 */
 	public Price updatePrice(Price current_price) throws SystemException {
 		log.info("Entering Price updatePrice(Price price)");
 

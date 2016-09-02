@@ -109,6 +109,12 @@ public class ProductController {
 		return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 	}
 
+
+	/**
+	 * Exception handler
+	 * @param ex SystemException
+	 * @return
+	 */
 	@ExceptionHandler(SystemException.class)
 	public ResponseEntity<ErrorResponse> exceptionHandler(SystemException ex) {
 		ErrorResponse error = new ErrorResponse();

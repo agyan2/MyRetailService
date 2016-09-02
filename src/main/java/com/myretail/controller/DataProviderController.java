@@ -76,7 +76,7 @@ public class DataProviderController {
 	}
 
 	@PreDestroy
-	public void deletePrices(){
+	public void deletePrices() {
 		priceRepo.deleteAll();
 	}
 }

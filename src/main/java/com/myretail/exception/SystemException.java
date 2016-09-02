@@ -1,10 +1,13 @@
 package com.myretail.exception;
 
+/**
+ * Custom Exception
+ * @author agyan2
+ *
+ */
 public class SystemException extends Exception {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private SystemExceptionEnum systemExceptionEnum;

@@ -5,7 +5,11 @@ import java.util.List;
 import com.myretail.exception.SystemException;
 import com.myretail.model.ProductName;
 
-
+/**
+ * ProductName Service
+ * @author agyan2
+ *
+ */
 
 public interface ProductNameService {
 	

@@ -6,7 +6,11 @@ import java.util.Map;
 import com.myretail.exception.SystemException;
 import com.myretail.model.Price;
 
-
+/**
+ * Product Price service
+ * @author agyan2
+ *
+ */
 
 public interface ProductPriceService {
 	

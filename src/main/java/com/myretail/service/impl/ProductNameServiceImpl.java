@@ -15,6 +15,11 @@ import com.myretail.exception.SystemExceptionEnum;
 import com.myretail.model.ProductName;
 import com.myretail.service.ProductNameService;
 
+/**
+ * ProductName Service retrieved ProductName 
+ * @author agyan2
+ *
+ */
 @Service("productNameService")
 
 public class ProductNameServiceImpl implements ProductNameService {
@@ -22,6 +27,9 @@ public class ProductNameServiceImpl implements ProductNameService {
 	@Autowired
 	RestTemplate restTemplate;
 
+	/**
+	 * Find productname by id
+	 */
 	public ProductName findById(long id) throws SystemException {
 		log.info("Entering ProductName findById(long id) " + id);
 		ProductName productName = null;
@@ -41,6 +49,9 @@ public class ProductNameServiceImpl implements ProductNameService {
 		return productName;
 	}
 
+	/**
+	 * find all product names
+	 */
 	public List<ProductName> findAll() throws SystemException {
 		log.info("Entering List<ProductName> findAll()");
 

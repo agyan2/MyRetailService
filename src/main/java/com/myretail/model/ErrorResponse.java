@@ -1,5 +1,9 @@
 package com.myretail.model;
-
+/**
+ * Error Response
+ * @author agyan2
+ *
+ */
 public class ErrorResponse {
 
 	private int code;

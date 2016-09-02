@@ -31,7 +31,8 @@
 		mongo-template-ref="mongoTemplate" />
 
 
-	<bean:bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+	<bean:bean id="mongoTemplate"
+		class="org.springframework.data.mongodb.core.MongoTemplate">
 		<bean:constructor-arg ref="mongo" />
 		<bean:constructor-arg name="databaseName" value="myretail" />
 	</bean:bean>

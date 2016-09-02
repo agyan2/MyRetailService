@@ -4,6 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+/**
+ * Price Resource
+ * @author agyan2
+ *
+ */
 @Document(collection="price")
 public class Price {
 	@JsonIgnore
