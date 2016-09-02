@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.myretail.exception.SystemException;
 import com.myretail.model.Price;
 import com.myretail.model.Product;
 import com.myretail.model.ProductName;
@@ -16,7 +16,7 @@ import com.myretail.service.ProductPriceService;
 import com.myretail.service.ProductService;
 
 @Service("productService")
-@Transactional
+
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	ProductPriceService productPriceService;
 
-	public Product findById(long id) {
+	public Product findById(long id) throws SystemException {
 		Product product = new Product();
 		ProductName productName = productNameService.findById(id);
 		Price price = productPriceService.findById(id);
@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 		product.setCurrent_price(price);
 	}
 
-	public List<Product> findAllProducts() {
+	public List<Product> findAllProducts() throws SystemException {
 		// Initialize Response
 		List<Product> products = new ArrayList<Product>();
 		// Get all product names
@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 
 	}
 
-	public Product updateProduct(Product product) {
+	public Product updateProduct(Product product) throws SystemException {
 		// TODO Auto-generated method stub
 		product.getCurrent_price().setId(product.getId());
 		Price updatedPrice = productPriceService.updatePrice(product.getCurrent_price());		
