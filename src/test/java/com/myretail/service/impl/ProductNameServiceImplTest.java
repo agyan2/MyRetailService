@@ -6,7 +6,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+import java.net.MalformedURLException;
+
+import org.apache.logging.log4j.LogManager;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,6 +34,12 @@ public class ProductNameServiceImplTest {
 	@Spy
 	@InjectMocks
 	ProductNameServiceImpl productNameService = new ProductNameServiceImpl();
+
+	@BeforeClass
+	public static void setLogger() throws MalformedURLException {
+		System.setProperty("log4j.configurationFile", "log4j-E1.xml");
+
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -75,13 +85,14 @@ public class ProductNameServiceImplTest {
 		assertNull(actualPoductName);
 
 	}
-	
+
 	@Test
 	public void testFindByIdForFailureProductNameError() {
 
 		ProductName expectedProductName = getDummyProductName();
 
-		when(restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/" + expectedProductName.getId(),
+		when(restTemplate.getForObject(
+				"http://localhost:8080/MyRetailService/api/v1/productname/" + expectedProductName.getId(),
 				ProductName.class)).thenThrow(new RestClientException("Abhinav"));
 		ProductName actualPoductName = null;
 		try {
