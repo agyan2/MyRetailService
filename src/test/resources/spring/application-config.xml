@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bean:beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:bean="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd 
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/bean/spring-beans.xsd">
+
+	<context:component-scan base-package="com.myretail.service" />
+
+	<bean:bean id="httpClientFactory"
+		class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+		<bean:property name="readTimeout" value="1000" />
+		<bean:property name="connectTimeout" value="500" />
+	</bean:bean>
+
+	<bean:bean id="restTemplate" class="org.springframework.web.client.RestTemplate"
+		scope="prototype">
+		<bean:constructor-arg ref="httpClientFactory" />
+	</bean:bean>
+
+	<!-- Configure the Mongo Server -->
+
+	<mongo:mongo id="mongo" host="localhost" port="27017" />
+
+	<!-- Activate Spring Data MongoDB repository support -->
+	<mongo:repositories base-package="com.myretail"
+		mongo-template-ref="mongoTemplate" />
+
+
+	<bean:bean id="mongoTemplate"
+		class="org.springframework.data.mongodb.core.MongoTemplate">
+		<bean:constructor-arg ref="mongo" />
+		<bean:constructor-arg name="databaseName" value="myretail" />
+	</bean:bean>
+
+
+
+</bean:beans>

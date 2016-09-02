@@ -1,0 +1,40 @@
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+
+	<Appenders>
+
+		<RollingRandomAccessFile name="rfile"
+			fileName="/logs/myretailservice/trace.log"
+			filePattern="/logs/myretailservice/archive/rollingrandomaccessfile.log.%d{yyyy-MM-dd-hh-mm}.gz">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="200 KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="30" />
+		</RollingRandomAccessFile>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		</Console>
+	</Appenders>
+
+	<Loggers>
+
+  		<Logger name="com.myretail" level="debug"/>
+  		<Logger name="org.springframework" level="debug"/>
+  		<Logger name="org.apache" level="debug"/>
+<!--  		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="STDOUT" />
+			
+		</Logger>
+ --><!-- 		<logger name="org.apache" level="info">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="rfile" />
+		</logger> -->
+ 		<Root level="debug">
+			<AppenderRef ref="STDOUT" /> 
+			<AppenderRef ref="rfile" />
+		</Root> 
+	</Loggers>
+
+</Configuration>

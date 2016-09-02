@@ -43,7 +43,7 @@ public class DataProviderController {
 		return new ResponseEntity<List<ProductName>>(productNames, HttpStatus.OK);
 	}
 
-	private static List<ProductName> productNames;
+	public static List<ProductName> productNames;
 
 	static {
 		productNames = populateDummyProductNames();
