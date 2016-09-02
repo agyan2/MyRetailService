@@ -3,6 +3,10 @@ package com.myretail.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myretail.model.Price;
-import com.myretail.model.Product;
 import com.myretail.model.ProductName;
+import com.myretail.repo.PriceRepo;
 
 @RestController
-public class ApiRestController {
+public class DataProviderController {
+
+	@Autowired
+	PriceRepo priceRepo;
 
 	@RequestMapping(value = "/api/productname/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductName> getProductName(@PathVariable("id") long id) {
@@ -40,6 +47,7 @@ public class ApiRestController {
 
 	static {
 		productNames = populateDummyProductNames();
+
 	}
 
 	private static List<ProductName> populateDummyProductNames() {
@@ -53,4 +61,22 @@ public class ApiRestController {
 		return productNames;
 	}
 
+	@PostConstruct
+	public void populatePrices() {
+
+		List<Price> prices = new ArrayList<Price>();
+		prices.add(new Price(null, 13860428, 13.49, "USD"));
+		prices.add(new Price(null, 15117729, 23.49, "USD"));
+		prices.add(new Price(null, 16483589, 11.51, "USD"));
+		prices.add(new Price(null, 16696652, 73.49, "USD"));
+		prices.add(new Price(null, 16752456, 99.89, "USD"));
+		prices.add(new Price(null, 15643793, 43.33, "USD"));
+		priceRepo.save(prices);
+
+	}
+
+	@PreDestroy
+	public void deletePrices(){
+		priceRepo.deleteAll();
+	}
 }

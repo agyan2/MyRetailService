@@ -1,4 +1,4 @@
-package com.myretail.service;
+package com.myretail.service.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.myretail.model.ProductName;
+import com.myretail.service.ProductNameService;
 
 @Service("productNameService")
 @Transactional

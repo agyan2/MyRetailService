@@ -19,33 +19,21 @@ import com.myretail.service.ProductService;
 
 @RestController
 public class ProductsRestController {
-	private static final Logger log=LogManager.getLogger();
+	private static final Logger log = LogManager.getLogger();
 	@Autowired
-	ProductService productService; // Service which will do all the data
-									// retireval/manipulation work for products
+	ProductService productService;
 
-	// -------------------Retrieve All
-	// Products--------------------------------------------------------
-
-	@RequestMapping(value = "/product/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> listAllProducts() {
 		log.info("Entering ResponseEntity<List<Product>> listAllProducts");
 		List<Product> products = productService.findAllProducts();
 		if (products.isEmpty()) {
 			log.info("Product List not found");
-			return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT);// You
-																			// may
-																			// decide
-																			// to
-																			// return
-																			// HttpStatus.NOT_FOUND
+			return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT); // HttpStatus.NOT_FOUND
 		}
 		log.info("Exiting ResponseEntity<List<Product>> listAllProducts");
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
-
-	// -------------------Retrieve Single Product By
-	// Id--------------------------------------------------------
 
 	@RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> getProductById(@PathVariable("id") long id) {
@@ -59,12 +47,10 @@ public class ProductsRestController {
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 
-	// ------------------- Update a Product
-	// --------------------------------------------------------
-
 	@RequestMapping(value = "/product/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> updatePriceById(@PathVariable("id") long id, @RequestBody Product product) {
-		log.info("Entering method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) " + id);
+		log.info("Entering method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) "
+				+ id);
 
 		Product currentProduct = productService.findById(id);
 
@@ -74,34 +60,11 @@ public class ProductsRestController {
 		}
 
 		currentProduct.setCurrent_price(product.getCurrent_price());
-		log.info("Updating Product with id "+id);
+		log.info("Updating Product with id " + id);
 		Product updatedProduct = productService.updateProduct(currentProduct);
-		log.info("Exiting method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) " + id);
+		log.info("Exiting method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) "
+				+ id);
 		return new ResponseEntity<Product>(updatedProduct, HttpStatus.OK);
 	}
 
-	/*
-	 * //-------------------Create a
-	 * User--------------------------------------------------------
-	 * 
-	 * @RequestMapping(value = "/user/", method = RequestMethod.POST) public
-	 * ResponseEntity<Void> createUser(@RequestBody User user,
-	 * UriComponentsBuilder ucBuilder) { System.out.println("Creating User " +
-	 * user.getName());
-	 * 
-	 * if (userService.isUserExist(user)) {
-	 * System.out.println("A User with name " + user.getName() +
-	 * " already exist"); return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-	 * }
-	 * 
-	 * userService.saveUser(user);
-	 * 
-	 * HttpHeaders headers = new HttpHeaders();
-	 * headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.
-	 * getId()).toUri()); return new ResponseEntity<Void>(headers,
-	 * HttpStatus.CREATED); }
-	 */
-
-
-	
 }

@@ -1,8 +1,14 @@
 package com.myretail.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+@Document(collection="price")
 public class Price {
+	@JsonIgnore
+	@Id
+	private String priceId;
 	@JsonIgnore
 	private long id;
 	
@@ -13,15 +19,10 @@ public class Price {
 	public Price() {
 		super();
 	}
-	
-	public Price(double value, String currency_code) {
+
+	public Price(String priceId, long id, double value, String currency_code) {
 		super();
-		this.value = value;
-		this.currency_code = currency_code;
-	}
-	
-	public Price(long id, double value, String currency_code) {
-		super();
+		this.priceId = priceId;
 		this.id=id;
 		this.value = value;
 		this.currency_code = currency_code;
@@ -51,10 +52,21 @@ public class Price {
 		this.id = id;
 	}
 
+	public String getPriceId() {
+		return priceId;
+	}
+
+	public void setPriceId(String priceId) {
+		this.priceId = priceId;
+	}
+
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Price [id=");
+		builder.append("Price [priceId=");
+		builder.append(priceId);
+		builder.append(", id=");
 		builder.append(id);
 		builder.append(", value=");
 		builder.append(value);
@@ -63,7 +75,5 @@ public class Price {
 		builder.append("]");
 		return builder.toString();
 	}
-
-	
 
 }

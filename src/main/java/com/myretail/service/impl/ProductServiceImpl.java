@@ -1,7 +1,8 @@
-package com.myretail.service;
+package com.myretail.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.myretail.model.Price;
 import com.myretail.model.Product;
 import com.myretail.model.ProductName;
+import com.myretail.service.ProductNameService;
+import com.myretail.service.ProductPriceService;
+import com.myretail.service.ProductService;
 
 @Service("productService")
 @Transactional
@@ -40,19 +44,19 @@ public class ProductServiceImpl implements ProductService {
 		List<Product> products = new ArrayList<Product>();
 		// Get all product names
 		List<ProductName> productNames = productNameService.findAll();
+		//Optimize to get products in one shot
+		Map<Long,Price> priceMap = productPriceService.findAllAsMap();
 		// Get All product Pricing
-		populateProducts(products, productNames);
+		populateProducts(products, productNames,priceMap);
 
 		return products;
 	}
 
-	private void populateProducts(List<Product> products, List<ProductName> productNames) {
+	private void populateProducts(List<Product> products, List<ProductName> productNames, Map<Long, Price> priceMap) {
 		Product product = null;
 		for (ProductName productName : productNames) {
 			product = new Product();
-
-			populateProduct(product, productName, productPriceService.findById(productName.getId()));
-
+			populateProduct(product, productName, priceMap.get(productName.getId()));
 			products.add(product);
 		}
 
@@ -61,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
 	public Product updateProduct(Product product) {
 		// TODO Auto-generated method stub
 		product.getCurrent_price().setId(product.getId());
-		Price updatedPrice = productPriceService.updatePrice(product.getCurrent_price());
+		Price updatedPrice = productPriceService.updatePrice(product.getCurrent_price());		
 		product.setCurrent_price(updatedPrice);
 		return product;
 	}
