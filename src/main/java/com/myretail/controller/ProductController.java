@@ -29,6 +29,7 @@ import com.myretail.service.ProductService;
  *
  */
 @RestController
+@RequestMapping("/api/v1")
 public class ProductController {
 	// Logger
 	private static final Logger log = LogManager.getLogger();
@@ -42,7 +43,7 @@ public class ProductController {
 	 * @return
 	 * @throws SystemException
 	 */
-	@RequestMapping(value = "/product", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/products", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> listAllProducts() throws SystemException {
 		log.info("Entering ResponseEntity<List<Product>> listAllProducts");
 		List<Product> products = productService.findAllProducts();
@@ -62,7 +63,7 @@ public class ProductController {
 	 * @return
 	 * @throws SystemException
 	 */
-	@RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> getProductById(@PathVariable("id") long id) throws SystemException {
 		log.info("Entering method ResponseEntity<Product> getProductById(@PathVariable(\"id\") long id) " + id);
 		Product product = productService.findById(id);
@@ -86,7 +87,7 @@ public class ProductController {
 	 * @throws SystemException
 	 *             s
 	 */
-	@RequestMapping(value = "/product/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/products/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> updatePriceById(@PathVariable("id") long id, @RequestBody Product product)
 			throws SystemException {
 		log.info(

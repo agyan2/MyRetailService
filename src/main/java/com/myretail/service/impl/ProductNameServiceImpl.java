@@ -34,7 +34,7 @@ public class ProductNameServiceImpl implements ProductNameService {
 		log.info("Entering ProductName findById(long id) " + id);
 		ProductName productName = null;
 		try {
-			productName = restTemplate.getForObject("http://localhost:8080/MyRetailService/api/productname/" + id,
+			productName = restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/" + id,
 					ProductName.class);
 
 		} catch (RestClientException rce) {// Exception handling can be fine
@@ -58,7 +58,7 @@ public class ProductNameServiceImpl implements ProductNameService {
 		ProductName[] productNames = null;
 
 		try {
-			productNames = restTemplate.getForObject("http://localhost:8080/MyRetailService/api/productname",
+			productNames = restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname",
 					ProductName[].class);
 		} catch (RestClientException rce) {// Exception handling can be fine
 											// grained if needed

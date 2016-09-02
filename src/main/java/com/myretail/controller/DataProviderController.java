@@ -25,7 +25,7 @@ public class DataProviderController {
 	@Autowired
 	PriceRepo priceRepo;
 
-	@RequestMapping(value = "/api/productname/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/api/v1/productname/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductName> getProductName(@PathVariable("id") long id) {
 
 		for (ProductName productName : productNames) {
@@ -37,7 +37,7 @@ public class DataProviderController {
 		return new ResponseEntity<ProductName>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/api/productname", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/api/v1/productname", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductName>> getProductNames() {
 
 		return new ResponseEntity<List<ProductName>>(productNames, HttpStatus.OK);
