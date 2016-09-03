@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myretail.exception.SystemException;
@@ -47,7 +48,7 @@ public class ProductController {
 	public ResponseEntity<List<Product>> listAllProducts() throws SystemException {
 		log.info("Entering ResponseEntity<List<Product>> listAllProducts");
 		List<Product> products = productService.findAllProducts();
-		if (products.isEmpty()) {
+		if (null==products || products.isEmpty()) {
 			log.info("Product List not found");
 			return new ResponseEntity<List<Product>>(HttpStatus.NO_CONTENT); // HttpStatus.NOT_FOUND
 		}
@@ -94,6 +95,12 @@ public class ProductController {
 				"Entering method ResponseEntity<Product> updatePriceById(@PathVariable(\"id\") long id, @RequestBody Product product) "
 						+ id);
 
+		if(id!=product.getId())
+		{
+			log.info("Product id " + id + " in product body not valid");
+			return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Product currentProduct = productService.findById(id);
 
 		if (currentProduct == null) {
@@ -125,6 +132,18 @@ public class ProductController {
 		error.setMessage(se.getMessage());
 
 		return new ResponseEntity<ErrorResponse>(error, se.getHttpStatus());
+
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
+		ErrorResponse error = new ErrorResponse();
+
+		error.setCode(HttpStatus.BAD_REQUEST.value());
+
+		error.setMessage(ex.getLocalizedMessage());
+
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
 
 	}
 }

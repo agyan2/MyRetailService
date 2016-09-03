@@ -24,6 +24,7 @@ import com.myretail.controller.DataProviderController;
 import com.myretail.exception.SystemException;
 import com.myretail.exception.SystemExceptionEnum;
 import com.myretail.model.ProductName;
+import com.myretail.util.ProductTestUtil;
 
 @RunWith(PowerMockRunner.class)
 public class ProductNameServiceImplTest {
@@ -48,7 +49,7 @@ public class ProductNameServiceImplTest {
 	@Test
 	public void testFindByIdForSuccess() {
 
-		ProductName expectedProductName = getDummyProductName();
+		ProductName expectedProductName = ProductTestUtil.getDummyProductName();
 
 		when(
 				restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/"
@@ -68,7 +69,7 @@ public class ProductNameServiceImplTest {
 	@Test
 	public void testFindByIdForFailureProductNameNotFound() {
 
-		ProductName expectedProductName = getDummyProductName();
+		ProductName expectedProductName = ProductTestUtil.getDummyProductName();
 
 		when(
 				restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/" + 1,
@@ -89,7 +90,7 @@ public class ProductNameServiceImplTest {
 	@Test
 	public void testFindByIdForFailureProductNameError() {
 
-		ProductName expectedProductName = getDummyProductName();
+		ProductName expectedProductName = ProductTestUtil.getDummyProductName();
 
 		when(
 				restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/"
@@ -108,15 +109,10 @@ public class ProductNameServiceImplTest {
 
 	}
 
-	private ProductName getDummyProductName() {
-
-		return DataProviderController.productNames.get(0);
-	}
-
 	@Test
 	public void testFindAllForSuccess() {
 
-		ProductName[] expectedProductNames = getDummyProductNames();
+		ProductName[] expectedProductNames = ProductTestUtil.getDummyProductNames();
 
 		when(restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname", ProductName[].class))
 				.thenReturn(expectedProductNames);
@@ -133,10 +129,6 @@ public class ProductNameServiceImplTest {
 		}
 	}
 
-	private ProductName[] getDummyProductNames() {
-		// TODO Auto-generated method stub
-		return DataProviderController.productNames.toArray(new ProductName[DataProviderController.productNames.size()]);
-	}
 
 	@Test
 	public void testFindAllForFailureProductNamesNotFound() {

@@ -6,6 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ ProductNameServiceImplTest.class, ProductPriceServiceImplTest.class, ProductServiceImplTest.class })
-public class AllTestsSuite {
+public class AllServiceTestsSuite {
 //Test Suite can be fine grained to factor slow and fast tests
 }

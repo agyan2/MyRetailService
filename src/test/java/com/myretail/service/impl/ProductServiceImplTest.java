@@ -26,6 +26,7 @@ import com.myretail.model.Product;
 import com.myretail.model.ProductName;
 import com.myretail.service.ProductNameService;
 import com.myretail.service.ProductPriceService;
+import com.myretail.util.ProductTestUtil;
 @RunWith(PowerMockRunner.class)
 public class ProductServiceImplTest {
 
@@ -49,7 +50,7 @@ public class ProductServiceImplTest {
 	@Test
 	public void testFindById() {
 		ProductName productName = getDummyProductName();
-		Price price = getDummyPrice(productName.getId());
+		Price price = ProductTestUtil.getDummyPrice(productName.getId());
 		Product expectedProduct = getDummyProduct(productName,price);
 		
 		Product actualProduct = null;
@@ -59,24 +60,15 @@ public class ProductServiceImplTest {
 			when(productPriceService.findById(expectedProduct.getId())).thenReturn(price);
 			actualProduct = productService.findById(expectedProduct.getId());
 			assertNotNull(actualProduct);
-			compareProduct(expectedProduct, actualProduct);
+			ProductTestUtil.compareProduct(expectedProduct, actualProduct);
 		} catch (SystemException e) {
 			e.printStackTrace();
 			fail("should not reach here");
 		}
 	}
 
-	private void compareProduct(Product expectedProduct, Product actualProduct) {
-		assertEquals(expectedProduct.getId(), actualProduct.getId());
-		assertEquals(expectedProduct.getName(), actualProduct.getName());
-		assertEquals(expectedProduct.getCurrent_price().getId(), actualProduct.getCurrent_price().getId());
-		assertEquals(expectedProduct.getCurrent_price().getValue(), actualProduct.getCurrent_price().getValue(),0.0);
-		assertEquals(expectedProduct.getCurrent_price().getCurrency_code(), actualProduct.getCurrent_price().getCurrency_code());
-	}
+
 	
-	private Price getDummyPrice(long id) {
-		return getPriceForProduct(id, DataProviderController.prices);
-	}
 
 
 	private Product getDummyProduct(ProductName productName, Price price) {
@@ -108,7 +100,7 @@ public class ProductServiceImplTest {
 			{
 				actualProduct=getMatchingProduct(product.getId(),actualProducts);
 				assertNotNull(actualProduct);
-				compareProduct(product, actualProduct);
+				ProductTestUtil.compareProduct(product, actualProduct);
 			}
 		} catch (SystemException e) {
 			e.printStackTrace();
@@ -171,7 +163,7 @@ public class ProductServiceImplTest {
 	public void testUpdateProduct() {
 		
 		ProductName productName = getDummyProductName();
-		Price price = getDummyPrice(productName.getId());
+		Price price = ProductTestUtil.getDummyPrice(productName.getId());
 		Price inputPrice = new Price();
 		inputPrice.setId(productName.getId());
 		Product expectedProduct = getDummyProduct(productName, price);
@@ -180,7 +172,7 @@ public class ProductServiceImplTest {
 			when(productPriceService.updatePrice(any(Price.class))).thenReturn(price);
 			actualProduct = productService.updateProduct(expectedProduct);
 			assertNotNull(actualProduct);
-			compareProduct(expectedProduct, actualProduct);
+			ProductTestUtil.compareProduct(expectedProduct, actualProduct);
 		} catch (SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

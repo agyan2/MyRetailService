@@ -13,7 +13,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +26,11 @@ import org.mockito.Spy;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.dao.DataAccessResourceFailureException;
 
-import com.myretail.controller.DataProviderController;
 import com.myretail.exception.SystemException;
 import com.myretail.exception.SystemExceptionEnum;
 import com.myretail.model.Price;
 import com.myretail.repo.PriceRepo;
+import com.myretail.util.ProductTestUtil;
 
 @RunWith(PowerMockRunner.class)
 public class ProductPriceServiceImplTest {
@@ -53,15 +52,13 @@ public class ProductPriceServiceImplTest {
 
 	@Test
 	public void testFindByIdForSuccess() {
-		Price expectedPrice = getDummyPrice();
+		Price expectedPrice = ProductTestUtil.getDummyPrice();
 		when(priceRepo.searchById(expectedPrice.getId())).thenReturn(expectedPrice);
 		Price actualPrice = null;
 		try {
 			actualPrice = productPriceService.findById(expectedPrice.getId());
 			assertNotNull(actualPrice);
-			assertEquals(expectedPrice.getId(), actualPrice.getId());
-			assertEquals(expectedPrice.getValue(), actualPrice.getValue(), 0.0);
-			assertEquals(expectedPrice.getCurrency_code(), actualPrice.getCurrency_code());
+			ProductTestUtil.comparePrice(expectedPrice, actualPrice);
 		} catch (SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,10 +67,12 @@ public class ProductPriceServiceImplTest {
 
 	}
 
+
+
 	@Test
 	public void testFindByIdForFailurePriceNotFound() {
 		long id = 1;
-		Price expectedPrice = getDummyPrice();
+		Price expectedPrice = ProductTestUtil.getDummyPrice();
 		when(priceRepo.searchById(expectedPrice.getId())).thenReturn(expectedPrice);
 		Price actualPrice = null;
 		try {
@@ -89,7 +88,7 @@ public class ProductPriceServiceImplTest {
 
 	@Test
 	public void testFindByIdForFailurePriceError() {
-		Price expectedPrice = getDummyPrice();
+		Price expectedPrice = ProductTestUtil.getDummyPrice();
 		when(priceRepo.searchById(expectedPrice.getId())).thenThrow(
 				new DataAccessResourceFailureException("Abhinav Exception"));
 		Price actualPrice = null;
@@ -104,17 +103,11 @@ public class ProductPriceServiceImplTest {
 		assertNull(actualPrice);
 	}
 
-	private Price getDummyPrice() {
-		return DataProviderController.prices.get(0);
-	}
 
-	private List<Price> getDummyPrices() {
-		return DataProviderController.prices;
-	}
 
 	@Test
 	public void testFindAllForSuccess() {
-		List<Price> expectedPrices = getDummyPrices();
+		List<Price> expectedPrices = ProductTestUtil.getDummyPrices();
 		when(priceRepo.findAll()).thenReturn(expectedPrices);
 		List<Price> actualPrices = null;
 		try {
@@ -162,8 +155,8 @@ public class ProductPriceServiceImplTest {
 
 	@Test
 	public void testFindAllAsMapForSuccess() {
-		List<Price> expectedPrices = getDummyPrices();
-		Map<Long, Price> expectedPriceMap = getDummyPricesAsMap();
+		List<Price> expectedPrices = ProductTestUtil.getDummyPrices();
+		Map<Long, Price> expectedPriceMap = ProductTestUtil.getDummyPricesAsMap();
 		when(priceRepo.findAll()).thenReturn(expectedPrices);
 		Map<Long, Price> actualPriceMap = null;
 		try {
@@ -196,22 +189,15 @@ public class ProductPriceServiceImplTest {
 		assertNull(actualPriceMap);
 	}
 
-	private Map<Long, Price> getDummyPricesAsMap() {
-		// TODO Auto-generated method stub
-		Map<Long, Price> priceMap = new HashMap<Long, Price>();
-		for (Price price : getDummyPrices()) {
-			priceMap.put(price.getId(), price);
-		}
-		return priceMap;
-	}
+
 	
 	@Mock
 	Price priceFromDB;
 	@Test
 	public void testUpdatePrice() {
 		
-		Price inputPrice = getDummyPrice();
-		Price expectedPrice = getDummyPrice();
+		Price inputPrice = ProductTestUtil.getDummyPrice();
+		Price expectedPrice = ProductTestUtil.getDummyPrice();
 		
 		Price actualPrice = null;
 		try {
