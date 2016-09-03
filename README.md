@@ -12,8 +12,11 @@ Add these jvm args to server classpath
  -Dspring.profiles.active=E1 -DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
  
 Uses Log4j2 async logger, Mockito and PowerMock for stubbed unit testing
+
+Logging folder /logs/myretailservice is needed
+
  
 Enhancements to include 
 1. Docker image to run on containers
-2. Adding integration & functional tests
+2. Adding integration & functional tests, was thinking of using javascript on nodejs for writting curl kind of utilities, eventually can be tied through some jenkins job
 3. Refactoring as the codebase grows, eventually model & DTO seperation
