@@ -1,6 +1,7 @@
 package com.myretail.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -44,7 +45,14 @@ public class DataProviderController {
 	}
 
 	public static List<ProductName> productNames;
-
+	public static List<Price> prices = new ArrayList<Price>(Arrays.asList(
+			new Price(null, 13860428, 13.49, "USD"),
+			new Price(null, 15117729, 23.49, "USD"),
+			new Price(null, 16483589, 11.51, "USD"),
+			new Price(null, 16696652, 73.49, "USD"),
+			new Price(null, 16752456, 99.89, "USD"),
+			new Price(null, 15643793, 43.33, "USD")
+			));
 	static {
 		productNames = populateDummyProductNames();
 
@@ -64,13 +72,8 @@ public class DataProviderController {
 	@PostConstruct
 	public void populatePrices() {
 
-		List<Price> prices = new ArrayList<Price>();
-		prices.add(new Price(null, 13860428, 13.49, "USD"));
-		prices.add(new Price(null, 15117729, 23.49, "USD"));
-		prices.add(new Price(null, 16483589, 11.51, "USD"));
-		prices.add(new Price(null, 16696652, 73.49, "USD"));
-		prices.add(new Price(null, 16752456, 99.89, "USD"));
-		prices.add(new Price(null, 15643793, 43.33, "USD"));
+		List<Price> prices = DataProviderController.prices;
+
 		priceRepo.save(prices);
 
 	}

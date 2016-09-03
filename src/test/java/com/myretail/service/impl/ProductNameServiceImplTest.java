@@ -7,8 +7,8 @@ import static org.junit.Assert.fail;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,7 +26,6 @@ import com.myretail.exception.SystemExceptionEnum;
 import com.myretail.model.ProductName;
 
 @RunWith(PowerMockRunner.class)
-// @PrepareForTest({ProductNameServiceImpl.class})
 public class ProductNameServiceImplTest {
 
 	@Mock
@@ -51,9 +50,9 @@ public class ProductNameServiceImplTest {
 
 		ProductName expectedProductName = getDummyProductName();
 
-		when(restTemplate.getForObject(
-				"http://localhost:8080/MyRetailService/api/v1/productname/" + expectedProductName.getId(),
-				ProductName.class)).thenReturn(expectedProductName);
+		when(
+				restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/"
+						+ expectedProductName.getId(), ProductName.class)).thenReturn(expectedProductName);
 		try {
 			ProductName actualPoductName = productNameService.findById(expectedProductName.getId());
 			assertNotNull(actualPoductName);
@@ -71,14 +70,15 @@ public class ProductNameServiceImplTest {
 
 		ProductName expectedProductName = getDummyProductName();
 
-		when(restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/" + 1,
-				ProductName.class)).thenReturn(expectedProductName);
+		when(
+				restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/" + 1,
+						ProductName.class)).thenReturn(expectedProductName);
 		ProductName actualPoductName = null;
 		try {
 			actualPoductName = productNameService.findById(expectedProductName.getId());
 		} catch (SystemException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 			assertEquals(e.getClass(), SystemException.class);
 			assertEquals(SystemExceptionEnum.PRODUCTNAME_NOT_FOUND, e.getSystemExceptionEnum());
 		}
@@ -91,15 +91,16 @@ public class ProductNameServiceImplTest {
 
 		ProductName expectedProductName = getDummyProductName();
 
-		when(restTemplate.getForObject(
-				"http://localhost:8080/MyRetailService/api/v1/productname/" + expectedProductName.getId(),
-				ProductName.class)).thenThrow(new RestClientException("Abhinav"));
+		when(
+				restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname/"
+						+ expectedProductName.getId(), ProductName.class))
+				.thenThrow(new RestClientException("Abhinav"));
 		ProductName actualPoductName = null;
 		try {
 			actualPoductName = productNameService.findById(expectedProductName.getId());
 		} catch (SystemException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 			assertEquals(e.getClass(), SystemException.class);
 			assertEquals(SystemExceptionEnum.PRODUCTNAME_ERROR, e.getSystemExceptionEnum());
 		}
@@ -112,8 +113,69 @@ public class ProductNameServiceImplTest {
 		return DataProviderController.productNames.get(0);
 	}
 
-	/*
-	 * @Test public void testFindAll() { fail("Not yet implemented"); }
-	 */
+	@Test
+	public void testFindAllForSuccess() {
 
+		ProductName[] expectedProductNames = getDummyProductNames();
+
+		when(restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname", ProductName[].class))
+				.thenReturn(expectedProductNames);
+		try {
+			List<ProductName> actualPoductNames = productNameService.findAll();
+
+			assertNotNull(actualPoductNames);
+			assertEquals(actualPoductNames.size(), expectedProductNames.length);
+			//Check individual objects if get time
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("Exception occured");
+		}
+	}
+
+	private ProductName[] getDummyProductNames() {
+		// TODO Auto-generated method stub
+		return DataProviderController.productNames.toArray(new ProductName[DataProviderController.productNames.size()]);
+	}
+
+	@Test
+	public void testFindAllForFailureProductNamesNotFound() {
+
+		ProductName[] expectedProductNames = null;
+		List<ProductName> actualPoductNames = null;
+		when(restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname", ProductName[].class))
+				.thenReturn(expectedProductNames);
+		try {
+			actualPoductNames = productNameService.findAll();
+
+			fail("should not execute");
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			
+			assertEquals(e.getClass(), SystemException.class);
+			assertEquals(SystemExceptionEnum.PRODUCTNAMES_NOT_FOUND, e.getSystemExceptionEnum());
+
+		}
+		assertNull(actualPoductNames);
+	}
+
+	@Test
+	public void testFindAllForFailureProductNamesError() {
+
+		List<ProductName> actualPoductNames = null;
+		when(restTemplate.getForObject("http://localhost:8080/MyRetailService/api/v1/productname", ProductName[].class))
+				.thenThrow(new RestClientException("Abhinav Exception"));
+		try {
+			actualPoductNames = productNameService.findAll();
+
+			fail("should not execute");
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			
+			assertEquals(e.getClass(), SystemException.class);
+			assertEquals(SystemExceptionEnum.PRODUCTNAMES_ERROR, e.getSystemExceptionEnum());
+
+		}
+		assertNull(actualPoductNames);
+	}
 }
