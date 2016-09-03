@@ -1,7 +1,7 @@
 # MyRetailService
 
 Sample application to demonstrate rest api, backend rest api consumption & mongo connection
-\n$cd MyRetailService
+/n$cd MyRetailService
 $mvn clean install, WAR Can be deployed to any container
 
 $mvn site, to check unit test and cobertura reports
